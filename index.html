@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06090f">
+<title>Overpass — Regional awareness</title>
+<meta name="description" content="A connected view of Bay Area public traffic cameras. Explore the region and monitor live traffic camera feeds with Overpass.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8l10-5ZM2 12l10 5 10-5M2 16l10 5 10-5"/></symbol>
+</defs></svg>
+<a class="skip" href="#main">Skip to workspace</a>
+<aside class="sidebar">
+<a href="#overview" class="brand" aria-label="Overpass home"><span class="brand-mark">◉</span><span>OVERPASS</span></a>
+<div class="workspace"><span class="workspace-icon">B</span><div>Bay Area workspace<small>Public infrastructure</small></div><span class="workspace-caret">⌄</span></div>
+<p class="nav-label">WORKSPACE</p>
+<nav aria-label="Main navigation">
+<a href="#overview" class="nav-link active"><svg><use href="#i-grid"/></svg>Overview<span class="nav-index">01</span></a>
+<a href="#wall" class="nav-link"><svg><use href="#i-camera"/></svg>Camera network<span class="nav-index">02</span></a>
+<a href="#capabilities" class="nav-link"><svg><use href="#i-layers"/></svg>Capabilities<span class="nav-index">03</span></a>
+</nav>
+<div class="sidebar-bottom"><div class="region-mini"><svg><use href="#i-globe"/></svg><p>San Francisco Bay Area<small>California · District 04</small></p></div><a href="#about" class="nav-link"><svg><use href="#i-info"/></svg>About this demo</a><div class="edition"><span class="avatar">OV</span><div>Overpass Systems<small>Concept / 2026</small></div><span class="edition-dot"></span></div></div>
+</aside>
+<div class="app-shell">
+<header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <b>Regional overview</b></div><div class="top-meta"><span class="demo-label">UNCLASSIFIED / PUBLIC DATA</span><time id="clock">— UTC</time></div></header>
+<main id="main">
+<section id="overview" class="overview">
+<div class="page-heading"><div><div class="eyebrow"><span class="tiny-line"></span> REGIONAL OPERATING PICTURE</div><h1>REGIONAL <span class="heading-accent">AWARENESS</span></h1><p>PUBLIC SENSOR NETWORK / SAN FRANCISCO BAY AREA</p></div><button class="button primary" id="present"><svg><use href="#i-expand"/></svg><span>Present view</span></button></div>
+<div class="metrics" aria-label="Network summary">
+<div class="metric"><div class="metric-label">Cameras in service<svg><use href="#i-camera"/></svg></div><div class="metric-value" id="camera-count">—</div><div class="metric-foot"><span class="status-dot" id="directory-dot"></span><span id="directory-status">Connecting to camera network</span></div></div>
+<div class="metric"><div class="metric-label">Regional coverage<svg><use href="#i-globe"/></svg></div><div class="metric-value"><span id="county-count">—</span><span class="unit">counties</span></div><div class="metric-foot">Bay Area camera network</div></div>
+<div class="metric"><div class="metric-label">Video-enabled cameras<svg><use href="#i-layers"/></svg></div><div class="metric-value" id="video-count">—</div><div class="metric-foot">Published HLS endpoints</div></div>
+<div class="metric"><div class="metric-label">Directory refreshed<svg><use href="#i-refresh"/></svg></div><div class="metric-value time-value" id="refresh-time">—</div><div class="metric-foot" id="refresh-note">Awaiting source response</div></div>
+</div>
+<section class="ai-panel" aria-label="Vehicle intelligence">
+<div><span class="eyebrow">AI / VEHICLE INTELLIGENCE</span><p id="ai-status" role="status">Starting local vehicle model…</p></div>
+<div class="ai-actions"><button class="button primary" id="ai-toggle" aria-pressed="true">Pause AI</button></div>
+</section>
+<div class="view-heading"><div class="section-title"><h2>Regional overview</h2><span class="subtle-badge">BAY AREA</span></div><span class="muted view-note">Select a camera to inspect its feed</span></div>
+<div class="operations-grid">
+<div class="map-panel"><div id="map" role="region" aria-label="Bay Area camera map"></div><div class="map-top"><span class="map-tag"><span class="status-dot"></span>Public camera network</span><button class="icon-button" id="reset-map" aria-label="Reset map to Bay Area" title="Reset map"><svg><use href="#i-globe"/></svg></button></div><div class="map-legend"><span><i></i> Video-enabled camera</span><span><i class="selected-dot"></i> Selected</span></div><div class="map-message" id="map-message" hidden>Map unavailable. You can still explore cameras below.</div></div>
+<aside class="inspector"><div class="inspector-heading"><span class="eyebrow">SENSOR DETAIL</span><span class="subtle-badge" id="selected-route">—</span></div><div class="spotlight-media" id="spotlight-media"><div class="media-state">Connecting to the camera network…</div></div><div class="spotlight-body"><div class="location-label" id="selected-place">SAN FRANCISCO BAY AREA</div><h3 id="selected-name">Your window into the region.</h3><p class="spotlight-description">Select any map marker or camera below for a closer look.</p><dl><div><dt>Source</dt><dd>Public traffic cameras</dd></div><div><dt>Coordinates</dt><dd id="selected-coords">—</dd></div><div><dt>Connection</dt><dd id="selected-status">Awaiting feed</dd></div></dl><a href="#wall" class="text-link">Explore camera network<svg><use href="#i-arrow"/></svg></a></div></aside>
+</div>
+<div class="source-strip"><svg><use href="#i-info"/></svg><span>Direct from public infrastructure. Live video availability depends on the source provider. Offline streams are skipped.</span><a href="#about">Source details ↗</a></div>
+</section>
+<section id="wall" class="camera-section"><div class="view-heading"><div><div class="section-title"><h2>Camera network</h2><span class="count-badge" id="result-count">—</span></div><p class="section-description">A closer look at the roads that connect the region.</p></div><button class="button" id="shuffle"><svg><use href="#i-refresh"/></svg>Rotate cameras</button></div><div class="wall-toolbar"><label class="search"><svg><use href="#i-search"/></svg><input id="camera-search" type="search" placeholder="Search location or highway…" aria-label="Search cameras by location or highway"></label><label class="filter-label">County<select id="county-filter"><option value="">All counties</option></select></label><span class="wall-status" id="wall-status" role="status">Loading directory…</span></div><div class="camera-grid" id="wall-grid"></div></section>
+<section id="capabilities" class="capabilities"><div class="section-title"><span class="eyebrow">PLATFORM CAPABILITIES</span><h2>CONNECTED INTELLIGENCE</h2></div><div class="cap-grid"><article><span class="cap-number">01 / CONNECT</span><svg><use href="#i-camera"/></svg><h3>One network. One view.</h3><p>Public camera feeds come together in a single workspace, without switching between sources.</p></article><article><span class="cap-number">02 / EXPLORE</span><svg><use href="#i-globe"/></svg><h3>Every feed has a place.</h3><p>Move between the map and camera wall to understand what’s happening, and where.</p></article><article><span class="cap-number">03 / OBSERVE</span><svg><use href="#i-layers"/></svg><h3>A clearer operating picture.</h3><p>Live video only. Failed streams are replaced automatically, with frame checks to keep blank feeds out of view.</p></article></div></section>
+<footer id="about"><div><a class="brand" href="#overview"><span class="brand-mark">◉</span><span>OVERPASS</span></a><p>REAL-TIME REGIONAL AWARENESS</p></div><div class="footer-note"><span class="demo-label">CONCEPT DEMONSTRATION</span><p>Public traffic imagery from <a href="https://cwwp2.dot.ca.gov/" target="_blank" rel="noopener noreferrer">the public camera network ↗</a>. Not affiliated with any government agency. This demo does not identify or track individuals.</p><small>© 2026 Overpass concept · Map © OpenStreetMap contributors</small></div></footer>
+</main></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+<script src="overlay-core.js"></script>
+<script src="ai.js"></script>
+<script src="app.js"></script>
+</body></html>

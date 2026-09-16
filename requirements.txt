@@ -1,0 +1,9 @@
+fastapi>=0.115,<1
+uvicorn>=0.34,<1
+ultralytics>=8.3,<9
+opencv-python>=4.10,<5
+numpy>=1.26,<3
+scipy>=1.13,<2
+pillow>=11,<13
+httpx>=0.28,<1
+pytest>=8,<10
