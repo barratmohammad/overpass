@@ -9,7 +9,7 @@ const element = () => ({hidden:false, textContent:'', setAttribute(){}, addEvent
   getContext:()=>ctx, toDataURL:()=> 'data:image/jpeg;base64,frame'});
 const nodes = new Map();
 const sandbox = {
-  window:{CycloneOverlay:{createOverlayTracker}}, location:{port:'4173'},
+  window:{CycloneOverlay:{createOverlayTracker}}, location:{hostname:'127.0.0.1',port:'4173'},
   document:{hidden:false, createElement:element, querySelector:s=>{if(!nodes.has(s))nodes.set(s,element());return nodes.get(s);}},
   crypto:{randomUUID:()=>String(++next)}, performance:{now:()=>100}, AbortSignal,
   setTimeout:(fn,delay)=>{const id=++next;timers.set(id,{fn,delay});return id;}, clearTimeout:id=>timers.delete(id),

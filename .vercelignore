@@ -1,0 +1,10 @@
+# The hosted build is the static site only. The vehicle-analysis service runs locally.
+backend/
+tests/
+.venv/
+.runtime/
+.pytest_cache/
+__pycache__/
+requirements.txt
+requirements.lock.txt
+run.sh

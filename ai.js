@@ -6,7 +6,9 @@ window.CycloneAI = (() => {
   const completed = [], recent = {perImage:[], overhead:[]};
   const median = values => [...values].sort((a, b) => a-b)[Math.floor(values.length/2)];
   let roundTrip = 0, cycleTimer = null;
-  const api = location.port === '4173' || location.port === '4174' ? '' : 'http://127.0.0.1:4173';
+  // A hosted build has no local processor to reach, so the AI layer stands down instead of failing loudly.
+  const LOCAL_HOSTS = new Set(['127.0.0.1', 'localhost', '[::1]', '::1', '']);
+  const api = LOCAL_HOSTS.has(location.hostname) ? (location.port === '4173' || location.port === '4174' ? '' : 'http://127.0.0.1:4173') : null;
   const $ = selector => document.querySelector(selector);
   const post = async (path, body, signal) => {
     const response = await fetch(api + path, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body), signal});
@@ -149,6 +151,7 @@ window.CycloneAI = (() => {
     requestAnimationFrame(paint);
   }
   function attach(container, video, camera){
+    if(api === null)return {state(){}, dispose(){}};
     const id = crypto.randomUUID(), canvas = document.createElement('canvas'), label = document.createElement('div');
     canvas.className = 'ai-overlay';canvas.setAttribute('aria-hidden', 'true');label.className = 'ai-summary';label.hidden = true;
     container.append(canvas, label);
@@ -171,10 +174,20 @@ window.CycloneAI = (() => {
       }
     };
   }
-  $('#ai-toggle').addEventListener('click', () => {
-    enabled = !enabled;$('#ai-toggle').setAttribute('aria-pressed', String(enabled));$('#ai-toggle').textContent = enabled ? 'Pause AI' : 'Enable AI';
-    entries.forEach(entry => {clear(entry);draw(entry);});summary();
-  });
-  health();setInterval(health, 5000);cycle();requestAnimationFrame(paint);
+  // #ai-status is a live region, so the hosted build states the boundary once and never polls.
+  function standDown(){
+    const status = $('#ai-status'), toggle = $('#ai-toggle'), panel = $('.ai-panel');
+    if(status)status.textContent = 'Vehicle analysis runs on a local processor and is not part of this hosted preview.';
+    if(toggle)toggle.hidden = true;
+    if(panel)panel.classList.add('unavailable');
+  }
+  if(api === null)standDown();
+  else{
+    $('#ai-toggle').addEventListener('click', () => {
+      enabled = !enabled;$('#ai-toggle').setAttribute('aria-pressed', String(enabled));$('#ai-toggle').textContent = enabled ? 'Pause AI' : 'Enable AI';
+      entries.forEach(entry => {clear(entry);draw(entry);});summary();
+    });
+    health();setInterval(health, 5000);cycle();requestAnimationFrame(paint);
+  }
   return {attach};
 })();

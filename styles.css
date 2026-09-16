@@ -387,6 +387,9 @@ h2{font-size:14px}
 .verification-message p{color:var(--accent);letter-spacing:1.4px}
 .ai-panel{display:flex;align-items:center;justify-content:space-between;gap:20px;border:1px solid #28516a;background:linear-gradient(110deg,#0c2030,#0c1320);padding:18px 20px;margin:-8px 0 28px}
 .ai-panel .eyebrow{color:var(--accent)}.ai-panel p{font-size:13px;margin:8px 0 3px}.ai-actions{display:flex;gap:10px}
+.ai-panel.unavailable{border-color:#24384a;background:linear-gradient(110deg,#0b1722,#0b1119)}
+.ai-panel.unavailable .eyebrow{color:var(--muted)}
+.ai-panel.unavailable .ai-actions{display:none}
 .camera-dot{animation:dot-pulse 2.4s ease-out infinite}
 .camera-dot.selected{animation:dot-pulse-selected 1.6s ease-out infinite}
 @keyframes dot-pulse{0%{stroke-width:1;stroke-opacity:.9;fill-opacity:.78}60%{stroke-width:9;stroke-opacity:0;fill-opacity:1}100%{stroke-width:9;stroke-opacity:0;fill-opacity:.78}}
